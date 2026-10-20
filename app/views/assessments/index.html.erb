@@ -12,9 +12,9 @@
     <span id="date-range-hint" class="sr-only">Choose dates up to today in <%= current_user.company.timezone %>. Future dates are unavailable.</span>
     <div class="status-filter"><%= form.label :status %><%= form.select :status, AssessmentStatus::VALUES.map { |s| [AssessmentStatus.label(s), s] }, { include_blank: "All statuses", selected: @filters.status } %></div>
     <div class="filter-actions"><%= form.submit "Apply filters", class: "button button-secondary" %><%= link_to "Clear", assessments_path, class: "clear-link" %></div>
-    <button class="button export-button" type="submit" formaction="<%= export_assessments_path %>" data-export-button>Export CSV <span aria-hidden="true">↓</span></button>
+    <button class="button export-button" type="submit" formaction="<%= export_assessments_path %>" data-export-button <% unless @export_available %>disabled aria-describedby="export-feedback"<% end %>>Export CSV <span aria-hidden="true">↓</span></button>
   <% end %>
-  <div class="table-context"><p>Created dates in <%= current_user.company.timezone %>. CSV includes employee, date, status and score.</p><p id="export-feedback" role="status" aria-live="polite"></p></div>
+  <div class="table-context"><p>Created dates in <%= current_user.company.timezone %>. CSV includes employee, date, status and score.</p><p id="export-feedback" role="status" aria-live="polite"><%= "No assessments to export. Change or clear the filters." unless @export_available %></p></div>
   <div class="table-scroll" tabindex="0" role="region" aria-label="Assessments table">
     <table><caption class="sr-only">Company assessments, newest first. Demo score: higher values indicate more reported workstation concerns.</caption><thead><tr><th scope="col">Employee</th><th scope="col">Created</th><th scope="col">Status</th><th scope="col">Demo score</th><th scope="col"><span class="sr-only">Review</span></th></tr></thead>
       <tbody>

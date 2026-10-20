@@ -13,10 +13,10 @@ Run `npm run start:dev` and open http://localhost:3000. These checks are not mar
 | Date/status filters | Only matching records; completed includes historical aliases | Pass Manual Testing |
 | Empty results | Use an old empty range, such as 1900-01-01 to 1900-01-02; a useful empty state appears | Recheck — owner marked the previous future-range expectation passed; future dates are now rejected |
 | CSV download | Exactly employee,created_date,status,score; employee names and scores match the dashboard; dates/statuses match filters; no emails/raw answers/comments | Recheck — owner marked the previous two-column expectation passed |
-| Empty CSV | Use 1900-01-01 to 1900-01-02; download contains only the four-column header row | Pending |
-| Invalid range | From later than To is prevented by the calendar; a manually edited URL with from later than to is rejected by the server | Pass reported by owner; recheck prevention in the new calendar |
+| Empty CSV | Apply 1900-01-01 to 1900-01-02: Export CSV is disabled and an explanation appears. Clear filters: export is enabled again. Direct `/assessments/export?from=1900-01-01&to=1900-01-02` still returns headers only | Pass Manual Testing |
+| Invalid range | From later than To is prevented by the calendar; a manually edited URL with from later than to is rejected by the server | Pass reported by owner; recheck prevention in the new calendar | Pass Manual Testing |
 | Company isolation | Copy a Northstar Review URL, sign into Fieldwork, open it: 404 | Pass Manual Testing |
-| Forged export scope | `/assessments/export?company_id=123` returns a filter error | Pending | Pass Manual Testing |
+| Forged export scope | `/assessments/export?company_id=123` returns a filter error | Pass Manual Testing |
 | Status save | Review → select approved status → save → new status persists | Pass Manual Testing |
 | Unmapped historical status | Useful explanation; explicit valid selection required | Pass Manual Testing |
 | Pagination | Next/Previous preserve active filters and show the expected rows | Pass Manual Testing |
@@ -25,7 +25,7 @@ Run `npm run start:dev` and open http://localhost:3000. These checks are not mar
 | Narrow viewport | Controls remain usable; table scrolls rather than breaking the page | Pass Manual Testing |
 | Future-date limits | Today is selectable; tomorrow and later dates cannot be selected in either calendar. A dashboard or export URL with a future from/to date is rejected | Pass Manual Testing |
 | Calendar navigation | Previous/next month and month/year menus work; unavailable months are disabled; selecting a day updates the correct field and closes the dialog | Pass Manual Testing |
-| Calendar range and clearing | End cannot precede start; start cannot follow end. Clear date clears only that field and releases its bound on the other picker; Today respects the other bound | Pass Manual Testing | Pass — observed by owner |
+| Calendar range and clearing | End cannot precede start; start cannot follow end. Clear date clears only that field and releases its bound on the other picker; Today respects the other bound | Pass Manual Testing |
 | Calendar keyboard and dismissal | Enter/Space opens; arrows move days, Home/End move within the week, PageUp/PageDown move months. Tab stays in the dialog; Escape/close returns focus to the opening control | Pass Manual Testing |
 | Filter combinations and reset | From-only, To-only, same-day and date-plus-status filters work. Values survive Apply/refresh; Clear resets both dates and status | Pass Manual Testing |
 | CSV across pages and companies | With no filters, CSV includes all 32 demo assessments, not just the current page. Each login exports only its own company; active filters also apply to export from page two | Pass Manual Testing |

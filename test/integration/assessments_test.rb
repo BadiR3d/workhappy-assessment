@@ -139,8 +139,18 @@ class AssessmentsTest < ActionDispatch::IntegrationTest
     sign_in(@admin)
     get assessments_path, params: { from: "1900-01-01", to: "1900-01-02" }
     assert_includes response.body, "No assessments found"
+    assert_select "button[data-export-button][disabled]", count: 1
     get export_assessments_path, params: { from: "1900-01-01", to: "1900-01-02" }
     assert_equal "employee,created_date,status,score\n", response.body
+  end
+
+  test "export stays enabled when records exist beyond an empty requested page" do
+    sign_in(@admin)
+    get assessments_path
+    assert_select "button[data-export-button]:not([disabled])", count: 1
+    get assessments_path, params: { page: 999 }
+    assert_includes response.body, "No assessments found"
+    assert_select "button[data-export-button]:not([disabled])", count: 1
   end
 
   test "logout removes access" do

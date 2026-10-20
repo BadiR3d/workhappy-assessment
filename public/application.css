@@ -48,3 +48,5 @@
 .calendar-today:disabled{opacity:.4;cursor:not-allowed}
 @media(max-width:1050px){.filter-form{grid-template-columns:repeat(3,minmax(0,1fr))}.filter-actions{grid-column:1 / 3}.filter-form .export-button{grid-column:3}}
 @media(max-width:650px){.filter-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px;padding:20px}.filter-form .status-filter{grid-column:1 / -1}.filter-actions{grid-column:1;gap:10px}.filter-form .export-button{grid-column:2}.filter-actions .button,.filter-form .export-button{padding:10px 12px;font-size:12px}.date-trigger{padding:10px;font-size:12px}.calendar-dialog{padding:20px}}
+
+.export-button:disabled,.export-button:disabled:hover{background:#e5ebe7;border-color:#d2dcd5;color:#64756c;cursor:not-allowed}

@@ -9,6 +9,7 @@ class AssessmentsController < ApplicationController
     @page = params[:page].to_s.match?(/\A[1-9]\d{0,2}\z/) ? params[:page].to_i : 1
     @assessments = filtered_scope.order(created_at: :desc, id: :desc)
       .limit(PAGE_SIZE + 1).offset((@page - 1) * PAGE_SIZE).to_a
+    @export_available = @assessments.any? || (@page > 1 && filtered_scope.exists?)
     @has_next = @assessments.length > PAGE_SIZE
     @assessments = @assessments.first(PAGE_SIZE)
     # Explicit company scope protects display even if old associations are inconsistent.
