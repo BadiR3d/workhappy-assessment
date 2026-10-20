@@ -41,7 +41,7 @@ class AssessmentsCsvTest < Minitest::Test
       output = StringIO.new
       row = Row.new(Timestamp.new(Date.new(2026, 10, 17)), "pending", nil, answers)
       AssessmentsCsv.new(timezone: "London").write_row(output, row, employee_name: nil)
-      assert_equal "Employee unavailable", CSV.parse_line(output.string)[0]
+      assert_equal "Employee Name Unavailable", CSV.parse_line(output.string)[0]
       assert_equal expected, CSV.parse_line(output.string)[3]
     end
   end
