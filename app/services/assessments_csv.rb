@@ -19,7 +19,7 @@ class AssessmentsCsv
     else "Score unavailable"
     end
     stream.write(CSV.generate_line([
-      spreadsheet_text(employee_name || "Employee unavailable"),
+      spreadsheet_text(employee_name || "Employee Name unavailable"),
       assessment.created_at.in_time_zone(@timezone).to_date.iso8601,
       AssessmentStatus.normalize(assessment.status) || "unmapped",
       score_value

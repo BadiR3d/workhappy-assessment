@@ -38,7 +38,7 @@ Trade-offs: exports occupy web capacity, the initial maximum-ID query must finis
 
 ## Score correctness
 
-As authorized by the user, the demo uses five equally weighted workstation questions. Each stored answer must be an integer from 0 to 4. Score = sum × 5; no rounding is needed. This is an illustrative formula, not Workhappy's rule or a clinically validated assessment.
+The demo uses five equally weighted workstation questions. Each stored answer must be an integer from 0 to 4. Score = sum × 5; no rounding is needed. This is an illustrative formula, not Workhappy's rule or a clinically validated assessment.
 
 All five valid answers produce an integer, including zero. Missing/null answers produce “Not yet scored”; malformed objects, wrong types or out-of-range answers produce “Score unavailable”. Invalid answers take precedence over missing ones. Comments and extra fields never affect scoring. Status and score are independent; completed records with missing answers are visibly not scored rather than assigned a fabricated zero.
 
