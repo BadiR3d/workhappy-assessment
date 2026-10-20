@@ -1,0 +1,31 @@
+<div class="page-heading"><div><p class="eyebrow">Company workspace</p><h1>Assessments</h1><p class="muted">A clear view of your team's workstation assessments.</p></div><span class="workspace-label"><%= current_user.company.name %></span></div>
+<section class="workspace" aria-label="Assessment dashboard">
+  <%= form_with url: assessments_path, method: :get, class: "filter-form", data: { export_form: true } do |form| %>
+    <div class="date-control">
+      <%= form.label :from, "From date" %>
+      <%= form.date_field :from, value: @filters.from&.iso8601, min: "1900-01-01", max: @filters.today.iso8601, aria: { describedby: "date-range-hint" } %>
+    </div>
+    <div class="date-control">
+      <%= form.label :to, "To date" %>
+      <%= form.date_field :to, value: @filters.to&.iso8601, min: "1900-01-01", max: @filters.today.iso8601, aria: { describedby: "date-range-hint" } %>
+    </div>
+    <span id="date-range-hint" class="sr-only">Choose dates up to today in <%= current_user.company.timezone %>. Future dates are unavailable.</span>
+    <div class="status-filter"><%= form.label :status %><%= form.select :status, AssessmentStatus::VALUES.map { |s| [AssessmentStatus.label(s), s] }, { include_blank: "All statuses", selected: @filters.status } %></div>
+    <div class="filter-actions"><%= form.submit "Apply filters", class: "button button-secondary" %><%= link_to "Clear", assessments_path, class: "clear-link" %></div>
+    <button class="button export-button" type="submit" formaction="<%= export_assessments_path %>" data-export-button>Export CSV <span aria-hidden="true">↓</span></button>
+  <% end %>
+  <div class="table-context"><p>Created dates in <%= current_user.company.timezone %>. CSV includes employee, date, status and score.</p><p id="export-feedback" role="status" aria-live="polite"></p></div>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Assessments table">
+    <table><caption class="sr-only">Company assessments, newest first. Demo score: higher values indicate more reported workstation concerns.</caption><thead><tr><th scope="col">Employee</th><th scope="col">Created</th><th scope="col">Status</th><th scope="col">Demo score</th><th scope="col"><span class="sr-only">Review</span></th></tr></thead>
+      <tbody>
+        <% @assessments.each do |assessment| %>
+          <% employee = @employees[assessment.employee_id]; score = assessment.score %>
+          <tr><td><span class="employee-name"><%= employee&.name || "Employee unavailable" %></span><span class="employee-email"><%= employee&.email %></span></td><td class="date-cell"><%= company_date(assessment.created_at) %></td><td><span class="status <%= status_class(assessment.status) %>"><%= AssessmentStatus.label(assessment.status) %></span></td><td class="score-cell <%= score.state == :scored ? 'score-number' : 'muted' %>"><%= score_label(score) %></td><td><%= link_to "Review", assessment_path(assessment), aria: { label: "Review assessment for #{employee&.name || 'unavailable employee'}" }, class: "review-link" %></td></tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @assessments.empty? %><div class="empty-state"><h2>No assessments found</h2><p>Try a different date range or status.</p><%= link_to "Clear filters", assessments_path, class: "button button-secondary" %></div><% end %>
+  </div>
+  <div class="table-footer"><span><%= @assessments.length %> assessments on this page</span><nav aria-label="Pagination"><% if @page > 1 %><%= link_to "Previous", assessments_path(@filters.to_h.merge(page: @page - 1)) %><% end %><span>Page <%= @page %></span><% if @has_next && @page < 999 %><%= link_to "Next", assessments_path(@filters.to_h.merge(page: @page + 1)) %><% end %></nav></div>
+</section>
+<p class="score-explanation">About the demo score: five answers rated 0–4, added together and multiplied by five. Higher values indicate more reported workstation concerns. Missing answers are not scored.</p>

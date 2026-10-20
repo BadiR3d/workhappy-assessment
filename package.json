@@ -1,0 +1,17 @@
+{
+  "name": "workhappy-assessment",
+  "private": true,
+  "scripts": {
+    "setup:dev": "bin/setup",
+    "start:dev": "bin/dev",
+    "benchmark": "bin/rails runner script/seed_benchmark.rb && bin/rails runner script/benchmark_dashboard.rb",
+    "zeitwerk:check": "bin/rails zeitwerk:check",
+    "test": "bin/rails test",
+    "build": "tsc --project tsconfig.json",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "test:calendar": "npm run build && node --test test/javascript/calendar_dates.test.mjs"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

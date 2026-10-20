@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Assessments · Workhappy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="stylesheet" href="/application.css">
+    <script type="module" src="/assessment_export.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="<%= root_path %>">workhappy<span class="brand-mark" aria-hidden="true">/</span></a>
+      <% if current_user %>
+        <div class="account"><span><%= current_user.company.name %></span><%= button_to "Sign out", logout_path, method: :delete, class: "text-button" %></div>
+      <% else %>
+        <span class="header-caption">Workspace wellbeing</span>
+      <% end %>
+    </header>
+    <main id="main" class="page">
+      <% flash.each do |type, message| %>
+        <div class="notice <%= type == 'alert' ? 'notice-error' : '' %>" role="<%= type == 'alert' ? 'alert' : 'status' %>"><%= message %></div>
+      <% end %>
+      <%= yield %>
+    </main>
+    <footer class="site-footer">Workhappy assessment demo <span>Fictional people. Illustrative scoring.</span></footer>
+  </body>
+</html>

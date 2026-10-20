@@ -1,0 +1,35 @@
+name: Verify assessment
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: workhappy_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/workhappy_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci && npm run typecheck && npm run build
+      - run: node --test test/javascript/calendar_dates.test.mjs
+      - run: bin/rails db:prepare
+      - run: bin/rails test
+      - run: bin/rails zeitwerk:check

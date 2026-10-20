@@ -1,0 +1,1 @@
+<section class="error-panel"><p class="eyebrow">Check your filters</p><h1>We couldn't apply these filters.</h1><ul role="alert"><% @filter_errors.each do |error| %><li><%= error %></li><% end %></ul><%= link_to "Back to assessments", assessments_path, class: "button" %></section>

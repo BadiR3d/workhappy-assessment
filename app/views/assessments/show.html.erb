@@ -1,0 +1,10 @@
+<%= link_to "← All assessments", assessments_path, class: "back-link" %>
+<div class="page-heading"><div><p class="eyebrow">Assessment review</p><h1><%= @employee&.name || "Employee unavailable" %></h1><p class="muted">Created <%= company_date(@assessment.created_at) %></p></div></div>
+<section class="detail-panel">
+  <div class="score-summary"><p class="eyebrow">Demo score</p><strong><%= score_label(@assessment.score) %></strong><p>Five equally weighted answers. Higher values indicate more reported workstation concerns.</p></div>
+  <div class="status-editor"><h2>Assessment status</h2><p class="muted">Current: <span class="status <%= status_class(@assessment.status) %>"><%= AssessmentStatus.label(@assessment.status) %></span></p>
+    <% unless AssessmentStatus.normalize(@assessment.status) %><p class="notice">This historical status needs review. Select an approved status before saving.</p><% end %>
+    <% if @assessment.errors.any? %><div class="notice notice-error" role="alert"><%= @assessment.errors.full_messages.join(". ") %></div><% end %>
+    <%= form_with model: @assessment, class: "stack" do |form| %><div><%= form.label :status, "Set status" %><%= form.select :status, AssessmentStatus::VALUES.map { |s| [AssessmentStatus.label(s), s] }, { selected: AssessmentStatus.normalize(@assessment.status), include_blank: "Choose status" }, required: true %></div><%= form.submit "Save status", class: "button" %><% end %>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+<section class="login-layout">
+  <div class="login-intro">
+    <p class="eyebrow">Your company workspace</p>
+    <h1>Better work starts<br>with a clearer view.</h1>
+    <p>Review your team's assessments and keep follow-ups moving.</p>
+    <div class="login-note">A focused view of your company’s assessments, with carefully scoped exports.</div>
+  </div>
+  <div class="login-panel">
+    <h2>Sign in</h2>
+    <p class="muted">Use your company administrator account.</p>
+    <%= form_with url: login_path, class: "stack" do |form| %>
+      <div><%= form.label :email, "Email address" %><%= form.email_field :email, required: true, autocomplete: "username", autofocus: true %></div>
+      <div><%= form.label :password %><%= form.password_field :password, required: true, autocomplete: "current-password" %></div>
+      <%= form.submit "Sign in to your workspace", class: "button" %>
+    <% end %>
+    <% unless Rails.env.production? %>
+      <details class="demo-accounts"><summary>Demo sign-in details</summary><p><strong>Northstar:</strong> admin@northstar.example<br><strong>Fieldwork:</strong> admin@fieldwork.example<br><strong>Password:</strong> Demo-assessment-2026!</p></details>
+    <% end %>
+  </div>
+</section>
