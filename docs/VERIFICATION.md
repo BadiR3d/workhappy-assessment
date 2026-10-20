@@ -70,3 +70,7 @@ Date controls are grouped and restyled, with maximum dates supplied by the serve
 GitHub publication and the narrated video are intentionally left to the owner. Historical backfill and final constraint validation remain plan-only.
 
 The date controls now use a styled calendar dialog with keyboard navigation and disabled future dates, retaining native inputs as the no-JavaScript fallback. The filter row uses one label baseline and equal-height controls. `npm run typecheck` and `npm run test:calendar` passed (4 calendar tests). Visual browser verification remains outstanding.
+
+## CI seed isolation fix (20 October)
+
+The reported CI run failed with duplicate demo-admin emails during test setup. Rails `db:prepare` seeds newly initialized databases by default, so the test database already contained the demo workspaces. CI now loads only the schema into its fresh PostgreSQL service database, and `config/database.yml` disables automatic seeding for the test database. Seed tests still explicitly load `db/seeds.rb` within test transactions. Rails boot confirms `seeds?` is false for test; workflow YAML parses and diff whitespace checks pass. A new CI run is needed to verify the full suite, including the two failures whose details were not included in the supplied log excerpt. Existing seeded local databases are not modified by this configuration change.

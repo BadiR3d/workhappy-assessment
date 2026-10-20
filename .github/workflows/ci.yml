@@ -30,6 +30,9 @@ jobs:
           cache: npm
       - run: npm ci && npm run typecheck && npm run build
       - run: node --test test/javascript/calendar_dates.test.mjs
-      - run: bin/rails db:prepare
+      # db:prepare seeds a fresh database; demo accounts collide with test setup.
+      # The service already creates workhappy_test. Load only the schema here;
+      # DemoSeedsTest explicitly loads seeds inside rolled-back test transactions.
+      - run: bin/rails db:schema:load
       - run: bin/rails test
       - run: bin/rails zeitwerk:check

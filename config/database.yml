@@ -12,6 +12,8 @@ test:
   <<: *default
   database: workhappy_test
   url: <%= ENV["TEST_DATABASE_URL"] %>
+  # Tests create their own records. DemoSeedsTest explicitly tests seed loading.
+  seeds: false
 
 production:
   <<: *default
